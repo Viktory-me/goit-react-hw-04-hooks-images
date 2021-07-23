@@ -24,7 +24,7 @@ export default function Searchbar({ onSubmit }) {
     }
 
     onSubmit(imageName);
-    reset();
+    reset(); 
   };
 
   const reset = () => {

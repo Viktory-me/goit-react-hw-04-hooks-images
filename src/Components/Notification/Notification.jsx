@@ -4,7 +4,7 @@ function Notification({ text }) {
 }
 
 Notification.defaultProps = {
-  text: "Something went wrong, please try again later ",
+  text: "Something went wrong, please try to change querry ",
 };
 
 export default Notification;
