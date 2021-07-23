@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -9,21 +10,17 @@ export default function Searchbar({ onSubmit }) {
     e.preventDefault();
 
     if (imageName.trim() === "") {
-      toast.dark("🦄Please enter search query", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // alert("Please enter search query");
+      toast("🦄Please enter search query");
       return;
     }
 
     onSubmit(imageName);
+    reset();
   };
-
+  const reset = () => {
+    setImageName("");
+  };
   return (
     <header className='Searchbar'>
       <form className='SearchForm' onSubmit={handleSubmit}>

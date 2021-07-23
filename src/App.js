@@ -1,49 +1,42 @@
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Loader from "react-loader-spinner";
-import imagesAPI from "./Components/Services/imagesAPI";
+import fetchImages from "./Components/Services/imagesAPI";
 import "./App.css";
 import Searchbar from "./Components/SearchBar/Searchbar";
 import Button from "./Components/Button/Button";
 import ImageGallery from "./Components/ImageGallery/ImageGallery.jsx";
+import Notification from "./Components/Notification/Notification";
 
 export default function App() {
   const [imageName, setImageName] = useState("");
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [status, setStatus] = useState("idle");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!imageName) return;
-    setStatus("pending");
-    fetchImagesOnClick(imageName, page);
-  }, [imageName, page]);
 
-  const fetchImagesOnClick = (imageName, page) => {
-    imagesAPI
-      .fetchImages(imageName, page)
+    setStatus("pending");
+
+    fetchImages(imageName, page)
       .then((newImages) => {
-        if (newImages.total === 0) {
-          setStatus("idle");
-          toast.error("Sorry, something went wrong");
-        } else {
-          setImages((images) => [...images, ...newImages.hits]);
+        if (newImages.total > 0) {
+          setImages((prevImages) => [...prevImages, ...newImages.hits]);
           setStatus("resolved");
           page > 1 &&
             window.scrollTo({
               top: document.documentElement.scrollHeight,
               behavior: "smooth",
             });
-          return;
-        }
-        return Promise.reject(new Error("Invalid request"));
+        } else return Promise.reject(new Error("Invalid request"));
       })
       .catch((err) => {
-        // console.log(typeof err);
-        // setStatus("idle");
-        // toast.error("Sorry, invalid request");
+        setError(err);
+        setStatus("rejected");
       });
-  };
+  }, [imageName, page, setImages]);
 
   const onClickLoadMore = () => setPage((page) => page + 1);
 
@@ -78,7 +71,13 @@ export default function App() {
           <Button onClick={onClickLoadMore} />
         </div>
       );
-
+    case "rejected":
+      return (
+        <div>
+          <Searchbar onSubmit={handleFormSubmit} />
+          <Notification text={error.text} />
+        </div>
+      );
     default:
       return (
         <div>

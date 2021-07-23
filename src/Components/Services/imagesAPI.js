@@ -10,6 +10,4 @@ function fetchImages(name, page) {
   });
 }
 
-const api = { fetchImages };
-
-export default api;
+export default fetchImages;
