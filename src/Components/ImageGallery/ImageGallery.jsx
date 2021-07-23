@@ -1,9 +1,8 @@
-import PropTypes from "prop-types";
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 
-function ImageGallery({ images, onClick }) {
+function ImageGallery({ images }) {
   return (
-    <ul className='ImageGallery' onClick={onClick}>
+    <ul className='ImageGallery'>
       {images.map((image, index) => (
         <ImageGalleryItem
           key={index}
@@ -15,9 +14,5 @@ function ImageGallery({ images, onClick }) {
     </ul>
   );
 }
-
-ImageGallery.propTypes = {
-  images: PropTypes.array.isRequired,
-};
 
 export default ImageGallery;

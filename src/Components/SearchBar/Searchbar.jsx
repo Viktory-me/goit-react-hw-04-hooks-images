@@ -1,26 +1,14 @@
-import { Component } from "react";
-import PropTypes from "prop-types";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default class Searchbar extends Component {
-  state = {
-    value: "",
-  };
+export default function Searchbar({ onSubmit }) {
+  const [imageName, setImageName] = useState("");
 
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-  handleNameChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
-  };
-
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (this.state.value.trim() === "") {
+    if (imageName.trim() === "") {
       toast.dark("🦄Please enter search query", {
         position: "top-center",
         autoClose: 5000,
@@ -33,31 +21,25 @@ export default class Searchbar extends Component {
       return;
     }
 
-    this.props.onSubmit(this.state.value);
+    onSubmit(imageName);
   };
 
-  handleClearSearchbar = () => {
-    this.setState({ value: "" });
-  };
-
-  render() {
-    const { value } = this.state;
-    return (
-      <header className='Searchbar'>
-        <form className='SearchForm' onSubmit={this.handleSubmit}>
-          <button type='submit' className='SearchForm-button'></button>
-          <input
-            value={value}
-            onChange={this.handleNameChange}
-            onClick={this.handleClearSearchbar}
-            className='SearchForm-input'
-            type='text'
-            autoComplete='off'
-            autoFocus
-            placeholder='Search images and photos'
-          />
-        </form>
-      </header>
-    );
-  }
+  return (
+    <header className='Searchbar'>
+      <form className='SearchForm' onSubmit={handleSubmit}>
+        <button type='submit' className='SearchForm-button'></button>
+        <input
+          value={imageName}
+          onChange={(event) =>
+            setImageName(event.currentTarget.value.toLowerCase())
+          }
+          className='SearchForm-input'
+          type='text'
+          autoComplete='off'
+          autoFocus
+          placeholder='Search images and photos'
+        />
+      </form>
+    </header>
+  );
 }
