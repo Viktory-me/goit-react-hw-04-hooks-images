@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import Loader from "react-loader-spinner";
 import fetchImages from "./Components/Services/imagesAPI";
 import "./App.css";
@@ -82,7 +82,8 @@ export default function App() {
       return (
         <div>
           <Searchbar onSubmit={handleFormSubmit} />
-          <ToastContainer
+          {/* <ToastContainer
+            role=' alert '
             position='top-center'
             autoClose={5000}
             hideProgressBar={false}
@@ -92,7 +93,7 @@ export default function App() {
             pauseOnFocusLoss
             draggable
             pauseOnHover
-          />
+          /> */}
         </div>
       );
   }
